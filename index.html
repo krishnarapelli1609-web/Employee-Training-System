@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPIPA Employee Training System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #2a5298;
+            border-bottom: 3px solid #2a5298;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .training-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .training-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .training-card h3 {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        .training-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .badge-approved {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-completed {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge-rejected {
+            background: #dc3545;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2a5298;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .filter-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 SPIPA Training System</h1>
+            <p>Sardar Patel Institute of Public Administration</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('employee')">Employee Portal</button>
+            <button class="nav-tab" onclick="showTab('spipa')">SPIPA Admin</button>
+            <button class="nav-tab" onclick="showTab('reports')">Reports</button>
+        </div>
+
+        <div class="content">
+            <!-- Employee Portal Tab -->
+            <div id="employee" class="tab-content active">
+                <h2>Apply for Training</h2>
+                <div id="employeeMessage"></div>
+                
+                <form id="trainingApplicationForm">
+                    <div class="form-group">
+                        <label>Employee ID *</label>
+                        <input type="text" id="empId" required placeholder="Enter your Employee ID">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="empName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <select id="empDept" required>
+                            <option value="">Select Department</option>
+                            <option value="General Administration">General Administration</option>
+                            <option value="Finance">Finance</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="empEmail" required placeholder="your.email@spipa.gov">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Training Subject *</label>
+                        <select id="trainingSubject" required>
+                            <option value="">Select Training Subject</option>
+                            <option value="Public Administration">Public Administration</option>
+                            <option value="Digital Governance">Digital Governance</option>
+                            <option value="Leadership Development">Leadership Development</option>
+                            <option value="Financial Management">Financial Management</option>
+                            <option value="Policy Analysis">Policy Analysis</option>
+                            <option value="Communication Skills">Communication Skills</option>
+                            <option value="Project Management">Project Management</option>
+                            <option value="Data Analytics">Data Analytics</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Training Duration</label>
+                        <select id="trainingDuration" required>
+                            <option value="">Select Duration</option>
+                            <option value="1 Day">1 Day</option>
+                            <option value="3 Days">3 Days</option>
+                            <option value="1 Week">1 Week</option>
+                            <option value="2 Weeks">2 Weeks</option>
+                            <option value="1 Month">1 Month</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preferred Start Date *</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason for Application</label>
+                        <textarea id="reason" rows="4" placeholder="Explain why you want to attend this training..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </form>
+
+                <h2 style="margin-top: 40px;">My Applications</h2>
+                <div id="myApplications"></div>
+            </div>
+
+            <!-- SPIPA Admin Tab -->
+            <div id="spipa" class="tab-content">
+                <h2>Training Applications Management</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalApplications">0</div>
+                        <div class="stat-label">Total Applications</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="stat-number" id="pendingApplications">0</div>
+                        <div class="stat-label">Pending Approval</div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="stat-number" id="approvedApplications">0</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Filter Applications</h3>
+                    <div class="filter-grid">
+                        <div>
+                            <label>Status</label>
+                            <select id="filterStatus" onchange="filterApplications()">
+                                <option value="">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Department</label>
+                            <select id="filterDept" onchange="filterApplications()">
+                                <option value="">All Departments</option>
+                                <option value="General Administration">General Administration</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">Human Resources</option>
+                                <option value="IT">Information Technology</option>
+                                <option value="Operations">Operations</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Subject</label>
+                            <select id="filterSubject" onchange="filterApplications()">
+                                <option value="">All Subjects</option>
+                                <option value="Public Administration">Public Administration</option>
+                                <option value="Digital Governance">Digital Governance</option>
+                                <option value="Leadership Development">Leadership Development</option>
+                                <option value="Financial Management">Financial Management</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adminApplications"></div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <h2>Training Reports</h2>
+                
+                <div class="filter-section">
+                    <h3>Generate Report</h3>
+                    <div class="filter-grid">
+                        <div>
+                            <label>Report Type</label>
+                            <select id="reportType">
+                                <option value="all">All Trainings</option>
+                                <option value="department">By Department</option>
+                                <option value="subject">By Subject</option>
+                                <option value="status">By Status</option>
+                                <option value="employee">By Employee</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>From Date</label>
+                            <input type="date" id="reportFromDate">
+                        </div>
+                        <div>
+                            <label>To Date</label>
+                            <input type="date" id="reportToDate">
+                        </div>
+                    </div>
+                    <button class="btn btn-info" onclick="generateReport()" style="margin-top: 15px;">Generate Report</button>
+                </div>
+
+                <div id="reportOutput"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const applications = [];
+
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const navTabs = document.querySelectorAll('.nav-tab');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'employee') {
+                displayMyApplications();
+            } else if (tabName === 'spipa') {
+                displayAdminApplications();
+                updateStats();
+            }
+        }
+
+        document.getElementById('trainingApplicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const application = {
+                id: Date.now(),
+                empId: document.getElementById('empId').value,
+                empName: document.getElementById('empName').value,
+                department: document.getElementById('empDept').value,
+                email: document.getElementById('empEmail').value,
+                subject: document.getElementById('trainingSubject').value,
+                duration: document.getElementById('trainingDuration').value,
+                startDate: document.getElementById('startDate').value,
+                reason: document.getElementById('reason').value,
+                status: 'Pending',
+                appliedDate: new Date().toLocaleDateString(),
+                completionDate: null
+            };
+            
+            applications.push(application);
+            
+            document.getElementById('employeeMessage').innerHTML = 
+                '<div class="success-message">✓ Training application submitted successfully! Application ID: ' + application.id + '</div>';
+            
+            this.reset();
+            displayMyApplications();
+            
+            setTimeout(() => {
+                document.getElementById('employeeMessage').innerHTML = '';
+            }, 5000);
+        });
+
+        function displayMyApplications() {
+            const container = document.getElementById('myApplications');
+            
+            if (applications.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">No applications yet. Submit your first training application above!</p>';
+                return;
+            }
+            
+            let html = '';
+            applications.forEach(app => {
+                html += `
+                    <div class="training-card">
+                        <h3>${app.subject}</h3>
+                        <div class="training-info">
+                            <div class="info-item"><strong>Application ID:</strong> ${app.id}</div>
+                            <div class="info-item"><strong>Department:</strong> ${app.department}</div>
+                            <div class="info-item"><strong>Duration:</strong> ${app.duration}</div>
+                            <div class="info-item"><strong>Start Date:</strong> ${app.startDate}</div>
+                            <div class="info-item"><strong>Applied On:</strong> ${app.appliedDate}</div>
+                            <div class="info-item"><strong>Status:</strong> <span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></div>
+                        </div>
+                        ${app.reason ? `<p><strong>Reason:</strong> ${app.reason}</p>` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function displayAdminApplications() {
+            const container = document.getElementById('adminApplications');
+            
+            if (applications.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">No applications received yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            applications.forEach(app => {
+                html += `
+                    <div class="training-card">
+                        <h3>${app.subject}</h3>
+                        <div class="training-info">
+                            <div class="info-item"><strong>Employee:</strong> ${app.empName} (${app.empId})</div>
+                            <div class="info-item"><strong>Department:</strong> ${app.department}</div>
+                            <div class="info-item"><strong>Email:</strong> ${app.email}</div>
+                            <div class="info-item"><strong>Duration:</strong> ${app.duration}</div>
+                            <div class="info-item"><strong>Start Date:</strong> ${app.startDate}</div>
+                            <div class="info-item"><strong>Status:</strong> <span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></div>
+                        </div>
+                        ${app.reason ? `<p><strong>Reason:</strong> ${app.reason}</p>` : ''}
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="updateStatus(${app.id}, 'Approved')" ${app.status !== 'Pending' ? 'disabled' : ''}>Approve</button>
+                            <button class="btn btn-danger" onclick="updateStatus(${app.id}, 'Rejected')" ${app.status !== 'Pending' ? 'disabled' : ''}>Reject</button>
+                            <button class="btn btn-info" onclick="updateStatus(${app.id}, 'Completed')" ${app.status !== 'Approved' ? 'disabled' : ''}>Mark Completed</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function updateStatus(id, status) {
+            const app = applications.find(a => a.id === id);
+            if (app) {
+                app.status = status;
+                if (status === 'Completed') {
+                    app.completionDate = new Date().toLocaleDateString();
+                }
+                displayAdminApplications();
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalApplications').textContent = applications.length;
+            document.getElementById('pendingApplications').textContent = 
+                applications.filter(a => a.status === 'Pending').length;
+            document.getElementById('approvedApplications').textContent = 
+                applications.filter(a => a.status === 'Approved').length;
+        }
+
+        function filterApplications() {
+            const status = document.getElementById('filterStatus').value;
+            const dept = document.getElementById('filterDept').value;
+            const subject = document.getElementById('filterSubject').value;
+            
+            let filtered = applications.filter(app => {
+                return (!status || app.status === status) &&
+                       (!dept || app.department === dept) &&
+                       (!subject || app.subject === subject);
+            });
+            
+            displayFilteredApplications(filtered);
+        }
+
+        function displayFilteredApplications(filtered) {
+            const container = document.getElementById('adminApplications');
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">No applications match the selected filters.</p>';
+                return;
+            }
+            
+            let html = '';
+            filtered.forEach(app => {
+                html += `
+                    <div class="training-card">
+                        <h3>${app.subject}</h3>
+                        <div class="training-info">
+                            <div class="info-item"><strong>Employee:</strong> ${app.empName} (${app.empId})</div>
+                            <div class="info-item"><strong>Department:</strong> ${app.department}</div>
+                            <div class="info-item"><strong>Email:</strong> ${app.email}</div>
+                            <div class="info-item"><strong>Duration:</strong> ${app.duration}</div>
+                            <div class="info-item"><strong>Start Date:</strong> ${app.startDate}</div>
+                            <div class="info-item"><strong>Status:</strong> <span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></div>
+                        </div>
+                        ${app.reason ? `<p><strong>Reason:</strong> ${app.reason}</p>` : ''}
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="updateStatus(${app.id}, 'Approved')" ${app.status !== 'Pending' ? 'disabled' : ''}>Approve</button>
+                            <button class="btn btn-danger" onclick="updateStatus(${app.id}, 'Rejected')" ${app.status !== 'Pending' ? 'disabled' : ''}>Reject</button>
+                            <button class="btn btn-info" onclick="updateStatus(${app.id}, 'Completed')" ${app.status !== 'Approved' ? 'disabled' : ''}>Mark Completed</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const fromDate = document.getElementById('reportFromDate').value;
+            const toDate = document.getElementById('reportToDate').value;
+            
+            let filtered = applications;
+            
+            if (fromDate && toDate) {
+                filtered = applications.filter(app => {
+                    const appDate = new Date(app.appliedDate);
+                    return appDate >= new Date(fromDate) && appDate <= new Date(toDate);
+                });
+            }
+            
+            let html = '<h3>Training Report</h3>';
+            html += '<table><thead><tr>';
+            html += '<th>Emp ID</th><th>Name</th><th>Department</th><th>Subject</th><th>Duration</th><th>Start Date</th><th>Status</th>';
+            html += '</tr></thead><tbody>';
+            
+            filtered.forEach(app => {
+                html += `<tr>
+                    <td>${app.empId}</td>
+                    <td>${app.empName}</td>
+                    <td>${app.department}</td>
+                    <td>${app.subject}</td>
+                    <td>${app.duration}</td>
+                    <td>${app.startDate}</td>
+                    <td><span class="badge badge-${app.status.toLowerCase()}">${app.status}</span></td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            
+            if (reportType === 'department') {
+                html += '<h3 style="margin-top: 30px;">Department-wise Summary</h3>';
+                const deptStats = {};
+                filtered.forEach(app => {
+                    if (!deptStats[app.department]) {
+                        deptStats[app.department] = 0;
+                    }
+                    deptStats[app.department]++;
+                });
+                
+                html += '<table><thead><tr><th>Department</th><th>Count</th></tr></thead><tbody>';
+                for (let dept in deptStats) {
+                    html += `<tr><td>${dept}</td><td>${deptStats[dept]}</td></tr>`;
+                }
+                html += '</tbody></table>';
+            }
+            
+            document.getElementById('reportOutput').innerHTML = html;
+        }
+
+        // Set minimum date to today
+        document.getElementById('startDate').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
